@@ -6,7 +6,7 @@ from flask import Flask
 from flask_cors import CORS
 
 BUTTON_PIN = 26
-LED_PIN = 16
+LED_PIN = 20
 LED_HIGH = 19
 SOUND_PIN = 18
 RELAY_PIN = 15
@@ -123,7 +123,7 @@ if __name__ == "__main__":
     GPIO.setup(BUTTON_PIN, GPIO.IN)
 
     GPIO.output(RELAY_PIN, 0)
-    GPIO.output(LED_HIGH, 1)
+    GPIO.output(LED_HIGH, 0)
 
     # Threads
     emergency_stop_thread = EmergencyStopThread()
