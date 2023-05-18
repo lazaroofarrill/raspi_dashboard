@@ -10,6 +10,7 @@ LED_PIN = 20
 LED_HIGH = 19
 SOUND_PIN = 18
 RELAY_PIN = 15
+PIN_6 = 6
 
 emergency_stop = False
 
@@ -120,11 +121,12 @@ def get_readings():
 
 if __name__ == "__main__":
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup([LED_PIN, LED_HIGH, SOUND_PIN, RELAY_PIN], GPIO.OUT)
+    GPIO.setup([LED_PIN, LED_HIGH, PIN_6, SOUND_PIN, RELAY_PIN], GPIO.OUT)
     GPIO.setup(BUTTON_PIN, GPIO.IN)
 
     GPIO.output(RELAY_PIN, 0)
     GPIO.output(LED_HIGH, 1)
+    GPIO.output(PIN_6, 0)
 
     # Threads
     emergency_stop_thread = EmergencyStopThread()
