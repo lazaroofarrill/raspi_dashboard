@@ -7,7 +7,7 @@ from flask_cors import CORS
 BUTTON_PIN = 23
 LED_PIN = 22
 SOUND_PIN = 18
-RELAY_PIN = 12
+RELAY_PIN = 15
 
 sensor = BMP085.BMP085(busnum=1)
 
