@@ -33,6 +33,7 @@ class LedWatchThread(Thread):
     def run(self):
         print("Starting led watch routine")
         while True:
+            time.sleep(0.01)
             if GPIO.input(RELAY_PIN):
                 GPIO.output(LED_PIN, 1)
                 time.sleep(1)
