@@ -33,7 +33,7 @@ class LedWatchThread(Thread):
     def run(self):
         print("Starting led watch routine")
         while True:
-            if emergency_stop:
+            if GPIO.input(RELAY_PIN):
                 GPIO.output(LED_PIN, 1)
                 time.sleep(1)
                 GPIO.output(LED_PIN, 0)
@@ -126,16 +126,13 @@ if __name__ == "__main__":
 
     GPIO.output(RELAY_PIN, 0)
     GPIO.output(LED_HIGH, 1)
-    GPIO.output(PIN_6, 0)
 
     # Threads
     emergency_stop_thread = EmergencyStopThread()
     led_watch_thread = LedWatchThread()
     button_watch_thread = ButtonWatchThread()
 
-    emergency_stop_thread.start()
     led_watch_thread.start()
-    button_watch_thread.start()
 
     from gevent import pywsgi
     from geventwebsocket.handler import WebSocketHandler
