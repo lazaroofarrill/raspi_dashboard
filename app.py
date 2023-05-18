@@ -1,13 +1,57 @@
 import time
-import Adafruit_BMP.BMP085 as BMP085
+from threading import Thread
 
+import Adafruit_BMP.BMP085 as BMP085
 from flask import Flask
 from flask_cors import CORS
 
-BUTTON_PIN = 23
-LED_PIN = 22
+BUTTON_PIN = 26
+LED_PIN = 19
 SOUND_PIN = 18
 RELAY_PIN = 15
+
+emergency_stop = False
+
+
+class EmergencyStopThread(Thread):
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        print("Starting emergency stop routine")
+        while True:
+            if emergency_stop:
+                GPIO.output(RELAY_PIN, 0)
+
+
+class LedWatchThread(Thread):
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        print("Starting led watch routine")
+        while True:
+            if emergency_stop:
+                GPIO.output(LED_PIN, 1)
+                time.sleep(1)
+                GPIO.output(LED_PIN, 0)
+                time.sleep(1)
+            else:
+                GPIO.output(LED_PIN, 1)
+
+
+class ButtonWatchThread(Thread):
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        global emergency_stop
+        print("Starting button watch routine")
+        while True:
+            button_value = GPIO.input(BUTTON_PIN)
+            if button_value:
+                emergency_stop = not emergency_stop
+
 
 sensor = BMP085.BMP085(busnum=1)
 
@@ -47,8 +91,7 @@ def toggle_led():
 
 @app.route("/fan/<value>")
 def switch_fan(value):
-    print(str(value))
-    if value == "on":
+    if value == "on" and (not emergency_stop):
         GPIO.output(RELAY_PIN, 1)
     elif value == "off":
         GPIO.output(RELAY_PIN, 0)
@@ -77,6 +120,15 @@ if __name__ == "__main__":
     GPIO.setup(BUTTON_PIN, GPIO.IN)
 
     GPIO.output(RELAY_PIN, 0)
+
+    # Threads
+    emergency_stop_thread = EmergencyStopThread()
+    led_watch_thread = LedWatchThread()
+    button_watch_thread = ButtonWatchThread()
+
+    emergency_stop_thread.run()
+    led_watch_thread.run()
+    button_watch_thread.run()
 
     from gevent import pywsgi
     from geventwebsocket.handler import WebSocketHandler
