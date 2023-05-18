@@ -47,6 +47,7 @@ def toggle_led():
 
 @app.route("/fan/<value>")
 def switch_fan(value):
+    print(str(value))
     if value == "on":
         GPIO.output(RELAY_PIN, 1)
     elif value == "off":
