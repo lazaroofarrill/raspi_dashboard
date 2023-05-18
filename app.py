@@ -124,7 +124,7 @@ if __name__ == "__main__":
     GPIO.setup(BUTTON_PIN, GPIO.IN)
 
     GPIO.output(RELAY_PIN, 0)
-    GPIO.output(LED_HIGH, 0)
+    GPIO.output(LED_HIGH, 1)
 
     # Threads
     emergency_stop_thread = EmergencyStopThread()
