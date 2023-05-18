@@ -38,7 +38,7 @@ class LedWatchThread(Thread):
                 GPIO.output(LED_PIN, 0)
                 time.sleep(1)
             else:
-                GPIO.output(LED_PIN, 1)
+                GPIO.output(LED_PIN, 0)
 
 
 class ButtonWatchThread(Thread):
