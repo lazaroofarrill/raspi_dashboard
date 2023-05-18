@@ -32,7 +32,7 @@ class LedWatchThread(Thread):
     def run(self):
         print("Starting led watch routine")
         while True:
-            if emergency_stop or True:
+            if emergency_stop:
                 GPIO.output(LED_PIN, 1)
                 time.sleep(1)
                 GPIO.output(LED_PIN, 0)
@@ -50,10 +50,11 @@ class ButtonWatchThread(Thread):
         print("Starting button watch routine")
         while True:
             print(GPIO.input(BUTTON_PIN))
-            time.sleep(0.1)
+            time.sleep(0.01)
             button_value = GPIO.input(BUTTON_PIN)
             if not button_value:
                 emergency_stop = not emergency_stop
+                time.sleep(1)
 
 
 sensor = BMP085.BMP085(busnum=1)
