@@ -52,7 +52,7 @@ class ButtonWatchThread(Thread):
             print(GPIO.input(BUTTON_PIN))
             time.sleep(0.01)
             button_value = GPIO.input(BUTTON_PIN)
-            if not button_value:
+            ifx button_value:
                 emergency_stop = not emergency_stop
                 time.sleep(1)
 
