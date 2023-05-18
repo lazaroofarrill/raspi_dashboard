@@ -126,9 +126,9 @@ if __name__ == "__main__":
     led_watch_thread = LedWatchThread()
     button_watch_thread = ButtonWatchThread()
 
-    emergency_stop_thread.run()
-    led_watch_thread.run()
-    button_watch_thread.run()
+    emergency_stop_thread.start()
+    led_watch_thread.start()
+    button_watch_thread.start()
 
     from gevent import pywsgi
     from geventwebsocket.handler import WebSocketHandler
