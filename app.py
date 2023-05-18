@@ -32,7 +32,7 @@ class LedWatchThread(Thread):
     def run(self):
         print("Starting led watch routine")
         while True:
-            if emergency_stop:
+            if emergency_stop or True:
                 GPIO.output(LED_PIN, 1)
                 time.sleep(1)
                 GPIO.output(LED_PIN, 0)
